@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>КП — Synergetic Онбординг-сайт</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --dark: #2d2d2d;
+            --dark-bg: #333333;
+            --light-bg: #f5f5f7;
+            --white: #ffffff;
+            --text-dark: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-light: #ffffff;
+            --text-light-secondary: rgba(255,255,255,0.65);
+            --accent: #e74c3c;
+            --accent-line: #e74c3c;
+            --card-bg: #ffffff;
+            --card-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            --card-radius: 16px;
+            --number-bg: #f0f0f2;
+            --number-color: #8e8e93;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* ===== SLIDE LAYOUT ===== */
+        .slide {
+            width: 100%;
+            min-height: 100vh;
+            padding: 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER BAR ===== */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            position: relative;
+        }
+
+        .slide-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 60px;
+            right: 60px;
+            height: 2px;
+            background: var(--accent-line);
+        }
+
+        .slide--dark .slide-header {
+            color: var(--text-light-secondary);
+        }
+
+        .slide--dark .slide-header::after {
+            background: var(--accent-line);
+        }
+
+        .slide-header .client { font-weight: 400; }
+        .slide-header .author { font-weight: 400; }
+        .slide-header .page-num { font-weight: 500; }
+
+        /* ===== SLIDE CONTENT ===== */
+        .slide-body {
+            flex: 1;
+            padding: 60px 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        /* ===== DARK SLIDES (cover & closing) ===== */
+        .slide--dark {
+            background: var(--dark-bg);
+            color: var(--text-light);
+        }
+
+        .slide--dark .slide-body {
+            justify-content: flex-end;
+            padding-bottom: 80px;
+        }
+
+        /* ===== LIGHT SLIDES ===== */
+        .slide--light {
+            background: var(--light-bg);
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        .slide-title {
+            font-size: clamp(48px, 7vw, 80px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+        }
+
+        .slide-subtitle {
+            font-size: 17px;
+            font-weight: 300;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        .slide--dark .slide-subtitle {
+            color: var(--text-light-secondary);
+        }
+
+        .slide--light .slide-subtitle,
+        .slide--light .slide-desc {
+            color: var(--text-secondary);
+        }
+
+        /* ===== COVER SPECIFICS ===== */
+        .cover-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 40px;
+        }
+
+        .cover-info {
+            flex: 1;
+        }
+
+        .cover-author {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .cover-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            background: var(--dark);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            flex-shrink: 0;
+        }
+
+        .cover-author-text .name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .cover-author-text .role {
+            font-size: 14px;
+            color: var(--text-light-secondary);
+        }
+
+        /* ===== NUMBERED LIST (задачи, доп инфо) ===== */
+        .numbered-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .numbered-item {
+            background: var(--card-bg);
+            border-radius: var(--card-radius);
+            padding: 28px 32px;
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .numbered-item .num {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            border-radius: 50%;
+            border: 1.5px solid #d1d1d6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--number-color);
+        }
+
+        .numbered-item .text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-dark);
+            padding-top: 8px;
+        }
+
+        /* ===== STRUCTURE TREE ===== */
+        .structure-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .structure-col h3 {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .structure-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .structure-item .sec-num {
+            font-weight: 700;
+            color: var(--text-secondary);
+            min-width: 24px;
+        }
+
+        .structure-item .sec-name {
+            font-weight: 500;
+        }
+
+        .structure-item .sec-desc {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-left: auto;
+        }
+
+        /* ===== STAGES TABLE ===== */
+        .stages-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .stage-card {
+            background: var(--card-bg);
+            border-radius: var(--card-radius);
+            padding: 32px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .stage-card .stage-num {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .stage-card .stage-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .stage-card .stage-item {
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f2;
+            display: flex;
+            gap: 12px;
+        }
+
+        .stage-card .stage-item:last-child {
+            border-bottom: none;
+        }
+
+        .stage-card .stage-item .sub-num {
+            font-weight: 600;
+            color: var(--text-dark);
+            min-width: 24px;
+        }
+
+        .stage-card .stage-days {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 2px solid var(--text-dark);
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        /* ===== TOTAL BAR ===== */
+        .total-bar {
+            background: var(--card-bg);
+            border-radius: var(--card-radius);
+            padding: 24px 32px;
+            margin-top: 24px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .total-bar .total-label {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .total-bar .total-value {
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== PRICING ===== */
+        .price-title {
+            font-size: clamp(48px, 7vw, 80px);
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1.05;
+            margin-bottom: 8px;
+        }
+
+        .price-subtitle {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+        }
+
+        .pricing-card {
+            background: var(--card-bg);
+            border-radius: var(--card-radius);
+            padding: 32px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card .pc-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .pricing-card .pc-row {
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f0f2;
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .pricing-card .pc-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .pricing-card .pc-price {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 2px solid var(--text-dark);
+            text-align: center;
+        }
+
+        .pricing-card .pc-price .current {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .pricing-card .pc-price .original {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        /* ===== TECH STACK ===== */
+        .tech-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .tech-tag {
+            background: var(--card-bg);
+            border-radius: 100px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--card-shadow);
+        }
+
+        /* ===== FOOTNOTE ===== */
+        .footnote {
+            margin-top: auto;
+            padding-top: 40px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .footnote strong {
+            color: var(--text-dark);
+        }
+
+        /* ===== CLOSING SLIDE ===== */
+        .closing-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 60px 60px 80px;
+        }
+
+        .closing-title {
+            font-size: clamp(48px, 7vw, 72px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+        }
+
+        .closing-contacts {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            margin-top: 8px;
+        }
+
+        .closing-contacts .contact-text {
+            font-size: 15px;
+            color: var(--text-light-secondary);
+            line-height: 1.6;
+        }
+
+        .tg-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .tg-button:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .tg-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* ===== SECTION NOTE ===== */
+        .section-note {
+            background: var(--card-bg);
+            border-radius: var(--card-radius);
+            padding: 24px 32px;
+            margin-top: 32px;
+            box-shadow: var(--card-shadow);
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ===== ABOUT GRID ===== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            margin-top: 40px;
+            align-items: start;
+        }
+
+        .about-text {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-dark);
+        }
+
+        .portfolio-label {
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: underline;
+            margin-bottom: 16px;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .portfolio-item {
+            background: var(--dark-bg);
+            border-radius: 12px;
+            height: 140px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.3);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* ===== SECTIONS DETAIL TABLE ===== */
+        .sections-table {
+            margin-top: 40px;
+        }
+
+        .section-row {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 8px;
+            box-shadow: var(--card-shadow);
+            display: grid;
+            grid-template-columns: 40px 160px 1fr 180px;
+            gap: 16px;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .section-row .sr-num {
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .section-row .sr-name {
+            font-weight: 600;
+        }
+
+        .section-row .sr-content {
+            color: var(--text-secondary);
+        }
+
+        .section-row .sr-pattern {
+            color: var(--text-secondary);
+            font-size: 13px;
+            text-align: right;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .slide-header { padding: 16px 24px; }
+            .slide-header::after { left: 24px; right: 24px; }
+            .slide-body, .closing-body { padding: 32px 24px 40px; }
+            .stages-grid { grid-template-columns: 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .structure-grid { grid-template-columns: 1fr; }
+            .about-grid { grid-template-columns: 1fr; }
+            .section-row { grid-template-columns: 30px 1fr; }
+            .section-row .sr-content,
+            .section-row .sr-pattern { display: none; }
+        }
+
+        /* ===== PRINT / PDF ===== */
+        @media print {
+            .slide { page-break-after: always; min-height: 100vh; }
+            .slide:last-child { page-break-after: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== SLIDE 0: COVER ==================== -->
+<div class="slide slide--dark">
+    <div class="slide-header">
+        <span class="client">для Synergetic</span>
+        <span class="author">@antar_antar</span>
+    </div>
+    <div class="slide-body" style="justify-content: flex-end; padding-bottom: 80px;">
+        <div class="cover-bottom">
+            <div class="cover-info">
+                <h1 class="slide-title" style="color: var(--text-light);">Коммерческое<br>предложение</h1>
+                <p class="slide-subtitle">разработка сайта-онбординга для новых сотрудников</p>
+            </div>
+            <div class="cover-author">
+                <div class="cover-avatar">👨‍💻</div>
+                <div class="cover-author-text">
+                    <div class="name">Андрей Антар</div>
+                    <div class="role">веб-дизайн и разработка</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 1: ЗАДАЧИ ==================== -->
+<div class="slide slide--light">
+    <div class="slide-header">
+        <span class="client">для Synergetic</span>
+        <span class="page-num">1</span>
+    </div>
+    <div class="slide-body">
+        <h2 class="slide-title">Задачи</h2>
+        <div class="numbered-list">
+            <div class="numbered-item">
+                <div class="num">1</div>
+                <div class="text">Перевести корпоративный каталог (21 слайд) в формат интерактивного веб-сайта — одностраничника с логичным потоком повествования для онбординга новых сотрудников</div>
+            </div>
+            <div class="numbered-item">
+                <div class="num">2</div>
+                <div class="text">Сохранить айдентику бренда Synergetic — цвета, шрифты, фото и философию «Будущее в наших руках» — и усилить восприятие через современный UI и анимации</div>
+            </div>
+            <div class="numbered-item">
+                <div class="num">3</div>
+                <div class="text">Обеспечить удобную навигацию: фиксированное меню, smooth-scroll по якорям, адаптив под мобильные (sticky bottom-nav для навигации большим пальцем)</div>
+            </div>
+            <div class="numbered-item">
+                <div class="num">4</div>
+                <div class="text">Реализовать интерактивные элементы: слайдеры сертификатов и продукции, counter-анимации для цифр производства, SVG-карту представленности, timeline наград</div>
+            </div>
+            <div class="numbered-item">
+                <div class="num">5</div>
+                <div class="text">Сделать сайт полностью статическим (SSG) — без бэкенда и админки, все данные захардкожены, мгновенная загрузка</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 2: СТРУКТУРА САЙТА ==================== -->
+<div class="slide slide--light">
+    <div class="slide-header">
+        <span class="client">для Synergetic</span>
+        <span class="author">@antar_antar</span>
+    </div>
+    <div class="slide-body">
+        <h2 class="slide-title">Структура сайта</h2>
+        <p class="slide-subtitle" style="margin-bottom: 8px;">Single Page Application со smooth-scroll по якорям — новый сотрудник листает сверху вниз, как историю.</p>
+        <div class="sections-table">
+            <div class="section-row">
+                <div class="sr-num">1</div>
+                <div class="sr-name">Hero</div>
+                <div class="sr-content">Обложка «Будущее в наших руках»</div>
+                <div class="sr-pattern">Полноэкранный баннер</div>
+            </div>
+            <div class="section-row">
+                <div class="sr-num">2</div>
+                <div class="sr-name">О бренде</div>
+                <div class="sr-content">Миссия + философия + ценности</div>
+                <div class="sr-pattern">3 карточки с иконками</div>
+            </div>
+            <div class="section-row">
+                <div class="sr-num">3</div>
+                <div class="sr-name">Сертификаты</div>
+                <div class="sr-content">ICEA, Vegan, Ecolabel, Dermatest, патенты</div>
+                <div class="sr-pattern">Горизонт. слайдер</div>
+            </div>
+            <div class="section-row">
+                <div class="sr-num">4</div>
+                <div class="sr-name">Награды</div>
+                <div class="sr-content">Timeline 2018–2024</div>
+                <div class="sr-pattern">Вертик. timeline</div>
+            </div>
+            <div class="section-row">
+                <div class="sr-num">5</div>
+                <div class="sr-name">Продукция</div>
+                <div class="sr-content">Home, Beauty, Oral, Baby Care</div>
+                <div class="sr-pattern">Табы + сетка карточек</div>
+            </div>
+            <div class="section-row">
+                <div class="sr-num">6</div>
+                <div class="sr-name">Производство</div>
+                <div class="sr-content">Цифры, площадка, мощности</div>
+                <div class="sr-pattern">Counter-анимации</div>
+            </div>
+            <div class="section-row">
+                <div class="sr-num">7</div>
+                <div class="sr-name">R&D</div>
+                <div class="sr-content">Лаборатория, методики</div>
+                <div class="sr-pattern">Карточки с цифрами</div>
+            </div>
+            <div class="section-row">
+                <div class="sr-num">8</div>
+                <div class="sr-name">Продажи</div>
+                <div class="sr-content">Nielsen, динамика, доля рынка</div>
+                <div class="sr-pattern">SVG-график роста</div>
+            </div>
+            <div class="section-row">
+                <div class="sr-num">9</div>
+                <div class="sr-name">Экоинициативы</div>
+                <div class="sr-content">Вещематы, фандоматы, Refill, #ПланетаДыши</div>
+                <div class="sr-pattern">Карусель проектов</div>
+            </div>
+            <div class="section-row">
+                <div class="sr-num">10</div>
+                <div class="sr-name">География</div>
+                <div class="sr-content">Карта представленности</div>
+                <div class="sr-pattern">Интерактивная SVG-карта</div>
+            </div>
+            <div class="section-row">
+                <div class="sr-num">11</div>
+                <div class="sr-name">Контакты</div>
+                <div class="sr-content">Сайт, соцсети, реквизиты</div>
+                <div class="sr-pattern">Footer</div>
+            </div>
+        </div>
+        <div class="section-note">
+            <strong>Навигация:</strong> Фиксированный хедер с пунктами: О нас | Продукция | Производство | Достижения | Экоинициативы | Контакты. На мобильных — sticky bottom-nav с иконками (5 разделов).
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 4: СТЕК ТЕХНОЛОГИЙ ==================== -->
+<div class="slide slide--light">
+    <div class="slide-header">
+        <span class="client">для Synergetic</span>
+        <span class="author">@antar_antar</span>
+    </div>
+    <div class="slide-body">
+        <h2 class="slide-title">Стек технологий</h2>
+        <p class="slide-subtitle" style="margin-bottom: 16px;">Статический одностраничник без фреймворков и бэкенда — чистый HTML/CSS/JS, хостится где угодно.</p>
+        <div class="tech-row">
+            <span class="tech-tag">HTML</span>
+            <span class="tech-tag">CSS / Tailwind</span>
+            <span class="tech-tag">Vanilla JS</span>
+            <span class="tech-tag">GSAP</span>
+            <span class="tech-tag">Swiper.js</span>
+        </div>
+
+        <div style="margin-top: 48px;">
+            <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 24px;">Где и что анимируем</h3>
+            <div class="numbered-list">
+                <div class="numbered-item">
+                    <div class="num">1</div>
+                    <div class="text"><strong>GSAP — scroll-анимации:</strong> плавное появление секций при скролле, counter-анимации цифр производства (2407 человек, 300 тонн/сутки), параллакс-эффект на Hero-баннере</div>
+                </div>
+                <div class="numbered-item">
+                    <div class="num">2</div>
+                    <div class="text"><strong>Swiper.js — слайдеры:</strong> сертификаты (6 карточек, swipe на мобильных), продукция (горизонтальная прокрутка внутри категорий), экоинициативы (карусель проектов)</div>
+                </div>
+                <div class="numbered-item">
+                    <div class="num">3</div>
+                    <div class="text"><strong>Vanilla JS:</strong> smooth-scroll навигация по якорям, hamburger-меню на мобильных, переключение табов продукции</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 5: ЭТАПЫ И СРОКИ ==================== -->
+<div class="slide slide--light">
+    <div class="slide-header">
+        <span class="client">для Synergetic</span>
+        <span class="author">@antar_antar</span>
+    </div>
+    <div class="slide-body">
+        <h2 class="slide-title">Этапы и сроки</h2>
+        <p class="slide-subtitle" style="margin-bottom: 8px;">Дизайн создаётся сразу в коде — без отдельных этапов прототипирования и макетов в Figma.</p>
+        <div class="stages-grid">
+            <div class="stage-card">
+                <div class="stage-num">1</div>
+                <div class="stage-title">Дизайн и вёрстка</div>
+                <div class="stage-item">
+                    <span class="sub-num">1.1</span>
+                    <span>Разметка всех 11 секций на основе каталога</span>
+                </div>
+                <div class="stage-item">
+                    <span class="sub-num">1.2</span>
+                    <span>Стилизация, типографика, цветовая схема бренда</span>
+                </div>
+                <div class="stage-item">
+                    <span class="sub-num">1.3</span>
+                    <span>Адаптив под мобильные и планшеты</span>
+                </div>
+                <div class="stage-days">7 дней</div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-num">2</div>
+                <div class="stage-title">Анимации и интерактив</div>
+                <div class="stage-item">
+                    <span class="sub-num">2.1</span>
+                    <span>Scroll-анимации и counter-анимации (GSAP)</span>
+                </div>
+                <div class="stage-item">
+                    <span class="sub-num">2.2</span>
+                    <span>Слайдеры с touch-поддержкой (Swiper)</span>
+                </div>
+                <div class="stage-item">
+                    <span class="sub-num">2.3</span>
+                    <span>Навигация, smooth-scroll, hamburger-меню</span>
+                </div>
+                <div class="stage-days">5 дней</div>
+            </div>
+
+            <div class="stage-card">
+                <div class="stage-num">3</div>
+                <div class="stage-title">Тестирование и деплой</div>
+                <div class="stage-item">
+                    <span class="sub-num">3.1</span>
+                    <span>Кроссбраузерное тестирование</span>
+                </div>
+                <div class="stage-item">
+                    <span class="sub-num">3.2</span>
+                    <span>Правки по обратной связи</span>
+                </div>
+                <div class="stage-item">
+                    <span class="sub-num">3.3</span>
+                    <span>Деплой на хостинг</span>
+                </div>
+                <div class="stage-days">3 дня</div>
+            </div>
+        </div>
+
+        <div class="total-bar">
+            <span class="total-label">всего</span>
+            <span class="total-value">15 рабочих дней</span>
+        </div>
+
+        <p class="footnote"><strong>* сроки указаны в рабочих днях:</strong> в расчёте количества дней не учитываются выходные и ожидание ответа от заказчика</p>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 6: СТОИМОСТЬ ==================== -->
+<div class="slide slide--light">
+    <div class="slide-header">
+        <span class="client">для Synergetic</span>
+        <span class="author">@antar_antar</span>
+    </div>
+    <div class="slide-body">
+        <div class="price-title">Стоимость 64 000 ₽</div>
+        <div class="price-subtitle">дизайн в коде, вёрстка, анимации, адаптив, деплой</div>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="pc-title">Дизайн и вёрстка</div>
+                <div class="pc-row">Разметка, стилизация, адаптив</div>
+                <div class="pc-row">7 дней</div>
+                <div class="pc-row">15 рабочих часов</div>
+                <div class="pc-row">2 000 рублей — стоимость часа</div>
+                <div class="pc-price">
+                    <span class="current">30 000 ₽</span>
+                </div>
+            </div>
+
+            <div class="pricing-card">
+                <div class="pc-title">Анимации и интерактив</div>
+                <div class="pc-row">GSAP, Swiper, навигация</div>
+                <div class="pc-row">5 дней</div>
+                <div class="pc-row">10 рабочих часов</div>
+                <div class="pc-row">2 000 рублей — стоимость часа</div>
+                <div class="pc-price">
+                    <span class="current">20 000 ₽</span>
+                </div>
+            </div>
+
+            <div class="pricing-card">
+                <div class="pc-title">Тестирование и деплой</div>
+                <div class="pc-row">Кроссбраузерность, правки, деплой</div>
+                <div class="pc-row">3 дня</div>
+                <div class="pc-row">7 рабочих часов</div>
+                <div class="pc-row">2 000 рублей — стоимость часа</div>
+                <div class="pc-price">
+                    <span class="current">14 000 ₽</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 7: ДОП ИНФОРМАЦИЯ ==================== -->
+<div class="slide slide--light">
+    <div class="slide-header">
+        <span class="client">для Synergetic</span>
+        <span class="author">@antar_antar</span>
+    </div>
+    <div class="slide-body">
+        <h2 class="slide-title">Доп информация</h2>
+        <div class="numbered-list">
+            <div class="numbered-item">
+                <div class="num">1</div>
+                <div class="text">Оплата поэтапно: 50% перед началом работ, 50% после приёмки готового сайта. Схема обсуждаема.</div>
+            </div>
+            <div class="numbered-item">
+                <div class="num">2</div>
+                <div class="text">Работаю по договору, в котором мы согласуем основные детали сотрудничества и техническое задание</div>
+            </div>
+            <div class="numbered-item">
+                <div class="num">3</div>
+                <div class="text">Анимации реализуются на GSAP — scroll-triggered появление секций, counter-анимации цифр, параллакс. Слайдеры на Swiper.js с touch-поддержкой</div>
+            </div>
+            <div class="numbered-item">
+                <div class="num">4</div>
+                <div class="text">Сайт статический — чистый HTML/CSS/JS без фреймворков, не требует серверной части, быстро загружается. Размещение на хостинге заказчика</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 8: CLOSING ==================== -->
+<div class="slide slide--dark">
+    <div class="slide-header">
+        <span class="client">для Synergetic</span>
+        <span class="author">@antar_antar</span>
+    </div>
+    <div class="closing-body">
+        <h2 class="closing-title">Буду рад<br>сотрудничеству</h2>
+        <div class="closing-contacts">
+            <div class="contact-text">
+                по всем вопросам пишите в Телеграм,<br>
+                я на связи пн-пт с 10:00 до 20:00 по мск
+            </div>
+            <a href="https://t.me/antar_antar" class="tg-button">
+                <svg class="tg-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" fill="currentColor"/>
+                </svg>
+                Telegram
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
