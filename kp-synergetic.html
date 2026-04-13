@@ -91,6 +91,14 @@
             color: var(--text-light);
         }
 
+        .slide--cover {
+            background: url('cover-bg.jpg') 70% center / cover no-repeat;
+        }
+
+        .slide--closing {
+            background: url('closing-bg.jpg') center center / cover no-repeat;
+        }
+
         .slide--dark .slide-body {
             justify-content: flex-end;
             padding-bottom: 80px;
@@ -148,7 +156,7 @@
             width: 100px;
             height: 100px;
             border-radius: 20px;
-            background: var(--dark);
+            background: var(--white);
             overflow: hidden;
             display: flex;
             align-items: center;
@@ -583,6 +591,39 @@
             .section-row { grid-template-columns: 30px 1fr; }
             .section-row .sr-content,
             .section-row .sr-pattern { display: none; }
+
+            .slide-title {
+                font-size: clamp(32px, 8vw, 48px);
+                letter-spacing: -1px;
+            }
+
+            .cover-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+            }
+
+            .cover-avatar {
+                width: 64px;
+                height: 64px;
+                border-radius: 14px;
+            }
+
+            .cover-avatar img {
+                width: 40px !important;
+                height: 40px !important;
+            }
+
+            .closing-title {
+                font-size: clamp(32px, 8vw, 48px);
+                letter-spacing: -1px;
+            }
+
+            .closing-contacts {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
         }
 
         /* ===== PRINT / PDF ===== */
@@ -595,7 +636,7 @@
 <body>
 
 <!-- ==================== SLIDE 0: COVER ==================== -->
-<div class="slide slide--dark">
+<div class="slide slide--dark slide--cover">
     <div class="slide-header">
         <span class="client">для Synergetic</span>
         <span class="author">@antar_antar</span>
@@ -607,7 +648,7 @@
                 <p class="slide-subtitle">разработка сайта-онбординга для новых сотрудников</p>
             </div>
             <div class="cover-author">
-                <div class="cover-avatar">👨‍💻</div>
+                <div class="cover-avatar"><img src="logo.svg" alt="Логотип" style="width: 60px; height: 60px;"></div>
                 <div class="cover-author-text">
                     <div class="name">Андрей Антар</div>
                     <div class="role">веб-дизайн и разработка</div>
@@ -921,7 +962,7 @@
 </div>
 
 <!-- ==================== SLIDE 8: CLOSING ==================== -->
-<div class="slide slide--dark">
+<div class="slide slide--dark slide--closing">
     <div class="slide-header">
         <span class="client">для Synergetic</span>
         <span class="author">@antar_antar</span>
